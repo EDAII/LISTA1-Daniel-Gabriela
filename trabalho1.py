@@ -9,25 +9,34 @@ def generateRandomUniqueNumbers(start, end, quantity):
     numbers.sort()
     return numbers
 
-# BUSCA SEQUENCIAL COM SENTINELA [O(n)]
-def sequentialSearch(key, values):
+# BUSCA SEQUENCIAL COM SENTINELA [O(n)] (Está inserindo a sentinela na lista passada por parametro)
+def sequentialSearchSentinel(key, values):
     i = 0
-    while(i < values.length):
-        if (values[i] == key):
-            return True
+    values.append(key)
+    pos = len(values) - 1
+    while (values[i] != key):
         i += 1
+    if i == (len(values) -1):
+        return False
+    return True
+
+# BUSCA SEQUENCIAL SEM SENTINELA [O(n)]
+def sequentialSearch(key, values):
+    for i in values:
+        if (key == i):
+            return True
     return False
 
 # BUSCA BINÁRIA (COM VETOR) [O(log n)]
 def binarySearch(key, values, start, end):
-    half = (end - start)/2
-    while(end >= start):
+    while(start <= end):
+        half = start + (end - start)//2
         if(values[half] == key):
             return True
         elif(values[half] < key):
-            binarySearch(key, values, start, end - (end - start)/2)
+            start = half + 1
         else:
-            binarySearch(key, values, start + (end - start)/2, end)
+            end = half - 1
     return False
 
 # TODO BUSCA POR INTERPOLAÇÃO [O(log(log n))]
