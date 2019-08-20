@@ -1,6 +1,13 @@
+import random
 # INFO: 
 ## Todos os valores ordenados
 ## Sem repetição
+
+# GERAR NÚMEROS ALEATÓRIOS EXCLUSIVOS DENTRO DE UM INTERVALO
+def generateRandomUniqueNumbers(start, end, quantity):
+    numbers = random.sample(range(start, end), quantity)
+    numbers.sort()
+    return numbers
 
 # BUSCA SEQUENCIAL COM SENTINELA [O(n)]
 def sequentialSearch(key, values):
