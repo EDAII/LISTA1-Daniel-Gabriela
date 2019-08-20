@@ -28,7 +28,9 @@ def sequentialSearch(key, values):
     return False
 
 # BUSCA BINÁRIA (COM VETOR) [O(log n)]
-def binarySearch(key, values, start, end):
+def binarySearch(key, values):
+    start = 0
+    end = len(values) - 1
     while(start <= end):
         half = start + (end - start)//2
         if(values[half] == key):
