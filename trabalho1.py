@@ -1,4 +1,4 @@
-# REGRAS: 
+# INFO: 
 ## Todos os valores ordenados
 ## Sem repetição
 
@@ -12,18 +12,16 @@ def sequentialSearch(key, values):
     return False
 
 # BUSCA BINÁRIA (COM VETOR) [O(log n)]
-def binarySearch(key, values, init, final):
-    half = (final - init)/2
-    while(final >= init):
+def binarySearch(key, values, start, end):
+    half = (end - start)/2
+    while(end >= start):
         if(values[half] == key):
             return True
         elif(values[half] < key):
-            binarySearch(key, values, init, final - (final - init)/2)
+            binarySearch(key, values, start, end - (end - start)/2)
         else:
-            binarySearch(key, values, init + (final - init)/2, final)
+            binarySearch(key, values, start + (end - start)/2, end)
     return False
-
-
 
 # TODO BUSCA POR INTERPOLAÇÃO [O(log(log n))]
 # https://marciobueno.com/arquivos/ensino/ed2/ED2_11_Pesquisa.pdf
