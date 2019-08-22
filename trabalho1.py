@@ -4,6 +4,8 @@ import random
 ## Todos os valores ordenados
 ## Sem repetição
 
+# TODO Colocar instalação do matplotlib no readme
+
 # GERAR NÚMEROS ALEATÓRIOS EXCLUSIVOS DENTRO DE UM INTERVALO
 def generateRandomUniqueNumbers(start, end, quantity):
     numbers = random.sample(range(start, end), quantity)
@@ -51,7 +53,7 @@ binarySearchTime = []
 sequentialSearchSentinelTime = []
 registersQtt = []
 
-for i in range(5):
+for i in range(100):
     keys = generateRandomUniqueNumbers(1, 1000, i)
 
     registersQtt.append(i)
@@ -60,7 +62,7 @@ for i in range(5):
     binarySearchTime.append(i+60)
     sequentialSearchSentinelTime.append(i+70)
 
-# # TODO Plotar o gráfico
+# PLOTANDO GRÁFICOS
 plt.plot(registersQtt, sequentialSearchTime)
 plt.plot(registersQtt, binarySearchTime)
 plt.plot(registersQtt, sequentialSearchSentinelTime)
