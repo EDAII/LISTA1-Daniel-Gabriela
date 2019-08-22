@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import random
 # INFO: 
 ## Todos os valores ordenados
@@ -44,11 +45,27 @@ def binarySearch(key, values):
 # TODO BUSCA POR INTERPOLAÇÃO [O(log(log n))]
 # https://marciobueno.com/arquivos/ensino/ed2/ED2_11_Pesquisa.pdf
 
+#INICIALIZA OS DICIONÁRIOS QUE CONTERÃO O Nº DE REGISTROS : TEMPO
+sequentialSearchTime = []
+binarySearchTime = []
+sequentialSearchSentinelTime = []
+registersQtt = []
 
-# TODO Gerar 1.000.000.000 números aleatórios
-# TODO Ordenar valores
-# TODO Separar vetores de tamanho 10, 100, 10.000, 1.000.000, 100.000.000, 1.000.000.000
-# TODO Criar array com o tempo que cada função demorou pra fazer a busca
-# TODO Plotar o gráfico
+for i in range(5):
+    keys = generateRandomUniqueNumbers(1, 1000, i)
+
+    registersQtt.append(i)
+    #no lugar de i+n deve ficar o tempo que demorou para cada método de busca encontrar a chave
+    sequentialSearchTime.append(i+50)
+    binarySearchTime.append(i+60)
+    sequentialSearchSentinelTime.append(i+70)
+
+# # TODO Plotar o gráfico
+plt.plot(registersQtt, sequentialSearchTime)
+plt.plot(registersQtt, binarySearchTime)
+plt.plot(registersQtt, sequentialSearchSentinelTime)
+plt.ylabel('Tempo (ms)')
+plt.xlabel('Quantidade de Registros')
+plt.show()
 
 
