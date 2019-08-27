@@ -1,6 +1,6 @@
-import matplotlib.pyplot as plt
 import random
 import time
+import matplotlib.pyplot as plt
 from functools import reduce
 # INFO: 
 ## Todos os valores ordenados
@@ -54,8 +54,7 @@ def binarySearch(key, values):
             end = half - 1
     return -1
 
-# TODO BUSCA POR INTERPOLAÇÃO [O(log(log n))]
-
+# BUSCA POR INTERPOLAÇÃO [O(log(log n))]
 def interpolationSearch(key, values):
     init = time.time()
     lower = 0
@@ -80,55 +79,51 @@ def interpolationSearch(key, values):
     return -1
 
 # TODO BUSCA INDEXADA
-# https://marciobueno.com/arquivos/ensino/ed2/ED2_11_Pesquisa.pdf
 
-#INICIALIZA OS DICIONÁRIOS QUE CONTERÃO O Nº DE REGISTROS : TEMPO
-def main():
+
+def getTimeResults(values):
+    timeResults = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Binary Search': [], 'Interpolation Search': []}
     registersQtt = []
-    sequentialSearchTime = []
-    sequentialSearchSentinelTime = []
-    binarySearchTime = []
-    interpolationSearchTime = []
-
-    keys = generateRandomUniqueNumbers(1, 9999999, MAX_REGISTRY)
 
     for i in range(10, MAX_REGISTRY, 100):
-        vector = keys[:i]
+        vector = values[:i]
         registersQtt.append(i)
 
-        auxVectorSequentialSearch = []
-        auxVectorBinarySearch = []
-        auxVectorSequentialSentinelSearch = []
-        auxVectorInterpolationSearch = []
+        auxDict = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Binary Search': [], 'Interpolation Search': []}
         
         for n in range(10):
             element = random.choice(vector)
 
-            auxVectorSequentialSearch.append(sequentialSearch(element, vector) * 1000000)
-            auxVectorSequentialSentinelSearch.append(sequentialSearchSentinel(element, vector.copy()) * 1000000)
-            auxVectorBinarySearch.append(binarySearch(element, vector) * 1000000)
-            auxVectorInterpolationSearch.append(interpolationSearch(element, vector) * 1000000)
+            auxDict['Sequential Search'].append(sequentialSearch(element, vector) * 1000000)
+            auxDict['Sequential Sentinel Search'].append(sequentialSearchSentinel(element, vector.copy()) * 1000000)
+            auxDict['Binary Search'].append(binarySearch(element, vector) * 1000000)
+            auxDict['Interpolation Search'].append(interpolationSearch(element, vector) * 1000000)
 
-        # SAIU DO FOR PEGA OS VETORES AUXILIARES CALCULA A MEDIA E APPEND NOS VETORES DE TEMPO
-        # TODO no lugar de i+n deve ficar o tempo que demorou para cada método de busca encontrar a chave
-        sequentialSearchTime.append(averageVector(auxVectorSequentialSearch))
-        sequentialSearchSentinelTime.append(averageVector(auxVectorSequentialSentinelSearch))
-        binarySearchTime.append(averageVector(auxVectorBinarySearch))
-        interpolationSearchTime.append(averageVector(auxVectorInterpolationSearch))
+        for key, value in auxDict.items():
+            timeResults[key].append(averageVector(value))
 
-    # PLOTANDO GRÁFICOS
+    return timeResults, registersQtt
+
+
+def plotLineChart(registersQuantity, timeDict):
     plt.figure('Search methods')
     plt.title("Search methods")
 
-    plt.plot(registersQtt, sequentialSearchTime, label='Sequential Search')
-    plt.plot(registersQtt, sequentialSearchSentinelTime, label='Sequential Sentinel Search')
-    plt.plot(registersQtt, binarySearchTime, label='Binary Search')
-    plt.plot(registersQtt, interpolationSearchTime, label='Interpolation Search')
+    for key, value in timeDict.items():
+        plt.plot(registersQuantity, value, label=key)
 
     plt.xlabel('Quantidade de Registros')
     plt.ylabel('Tempo (µs)')
+
     plt.legend()
     plt.show()
+
+#INICIALIZA OS DICIONÁRIOS QUE CONTERÃO O Nº DE REGISTROS : TEMPO
+def main():
+
+    timeResults, registersQtt = getTimeResults(generateRandomUniqueNumbers(0, 99999, MAX_REGISTRY))
+    
+    plotLineChart(registersQtt, timeResults)
 
 if __name__ == '__main__':
     main()
