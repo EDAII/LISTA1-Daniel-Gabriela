@@ -89,11 +89,13 @@ def main():
         binarySearchTime.append(averageVector(auxVectorBinarySearch))
 
     # PLOTANDO GRÁFICOS
-    plt.plot(registersQtt, sequentialSearchTime)
-    plt.plot(registersQtt, binarySearchTime)
-    plt.plot(registersQtt, sequentialSearchSentinelTime)
-    plt.ylabel('Tempo (µs)')
+    plt.title("Search's")
+    plt.plot(registersQtt, sequentialSearchTime, label='Sequential Search')
+    plt.plot(registersQtt, sequentialSearchSentinelTime, label='Sequential Sentinel Search')
+    plt.plot(registersQtt, binarySearchTime, label='Binary Search')
     plt.xlabel('Quantidade de Registros')
+    plt.ylabel('Tempo (µs)')
+    plt.legend()
     plt.show()
 
 if __name__ == '__main__':
