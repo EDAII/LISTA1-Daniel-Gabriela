@@ -95,17 +95,42 @@ def interpolationSearch(key, values):
     return -1
 
 # TODO BUSCA INDEXADA
+# BUSCA TERNÁRIA
+def ternarySearch(key, values):
+    init = time.time()
 
+    left = 0
+    right = len(values)
+
+    while right >= left: 
+          
+        mid1 = left + (right-left) // 3
+        mid2 = right - (right-left) // 3
+  
+        if key == values[mid1]: 
+            return time.time() - init
+        if key == values[mid2]: 
+            return time.time() - init
+  
+        if key < values[mid1]: 
+            right = mid1 - 1
+        elif key > values[mid2]: 
+            left = mid2 + 1
+        else: 
+            left = mid1 + 1
+            right = mid2 - 1
+  
+    return -1
 
 def getTimeResults(values):
-    timeResults = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Binary Search': [], 'Interpolation Search': []}
+    timeResults = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Binary Search': [], 'Ternary Search': [], 'Interpolation Search': []}
     registersQtt = []
 
     for i in range(10, MAX_REGISTRY, 100):
         vector = values[:i]
         registersQtt.append(i)
 
-        auxDict = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Binary Search': [], 'Interpolation Search': []}
+        auxDict = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Binary Search': [], 'Ternary Search': [], 'Interpolation Search': []}
         
         for n in range(10):
             element = random.choice(vector)
@@ -113,6 +138,7 @@ def getTimeResults(values):
             auxDict['Sequential Search'].append(sequentialSearch(element, vector) * 1000000)
             auxDict['Sequential Sentinel Search'].append(sequentialSearchSentinel(element, vector.copy()) * 1000000)
             auxDict['Binary Search'].append(binarySearch(element, vector) * 1000000)
+            auxDict['Ternary Search'].append(ternarySearch(element, vector) * 1000000)
             auxDict['Interpolation Search'].append(interpolationSearch(element, vector) * 1000000)
 
         for key, value in auxDict.items():
