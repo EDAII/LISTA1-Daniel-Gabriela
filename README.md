@@ -1,4 +1,4 @@
-# <p align="center"> Python code for sequence alignment include graphic interface made with pygame </p>
+# <p align="center"> Comparison of search methods </p>
 
 ## Autors
 
