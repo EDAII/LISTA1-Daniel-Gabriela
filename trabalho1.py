@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 ## Sem repetição
 
 MAX_REGISTRY = 10000
+STEP = 50
 
 def averageVector(values):
     return sum(values) / len(values)
@@ -35,19 +36,18 @@ def sequentialSearchSentinel(key, values):
 # BUSCA SEQUENCIAL SEM SENTINELA [O(n)]
 def sequentialSearch(key, values):
     init = time.time()
-    i = 0
-    while i < len(values):
-        if (values[i] == key):
+    for i in values:
+        if (key == i):
             return time.time() - init
-        i += 1
     return -1
 
-# Dessa forma ela roda mais rapido, sendo mais rapido que com sentinela
 # def sequentialSearch(key, values):
 #     init = time.time()
-#     for i in values:
-#         if (key == i):
+#     i = 0
+#     while i < len(values):
+#         if (values[i] == key):
 #             return time.time() - init
+#         i += 1
 #     return -1
 
 # BUSCA BINÁRIA (COM VETOR) [O(log n)]
@@ -94,7 +94,48 @@ def interpolationSearch(key, values):
 
     return -1
 
-# TODO BUSCA INDEXADA
+#BUSCA INDEXADA
+#https://www.geeksforgeeks.org/indexed-sequential-search/
+def indexedSearch(key, values):
+    index = {}
+    registers = {}
+
+    j = 0
+    for i in range(0, len(values), STEP):        
+        # guarda index
+        index[j] = i
+        registers[j] = values[i]
+        j += 1
+    
+    if(j < len(values)-1):
+        index[j] = len(values)-1
+        registers[j] = values[len(values)-1]
+        j += 1
+
+    #Começa a busca
+    init = time.time()
+    if(key < registers[0]):
+        return -1
+    else:
+        
+        for i in range(1, j+1):
+            if(key < registers[i]):
+                start = index[i - 1]
+                end = index[i] 
+                break
+            elif(key == registers[i]):
+                return time.time() - init
+
+    for i in range(start, end + 1): 
+        if(key == values[i]): 
+            j = 1
+            break
+    
+    if(j == 1):
+        return time.time() - init
+    else:
+        return -1
+
 # BUSCA TERNÁRIA
 def ternarySearch(key, values):
     init = time.time()
@@ -103,7 +144,7 @@ def ternarySearch(key, values):
     right = len(values)
 
     while right >= left: 
-          
+
         mid1 = left + (right-left) // 3
         mid2 = right - (right-left) // 3
   
@@ -123,29 +164,29 @@ def ternarySearch(key, values):
     return -1
 
 def getTimeResults(values):
-    timeResults = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Binary Search': [], 'Ternary Search': [], 'Interpolation Search': []}
+    timeResults = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Indexed Sequential Search': [], 'Binary Search': [], 'Interpolation Search': [], 'Ternary Search': []}
     registersQtt = []
 
     for i in range(10, MAX_REGISTRY, 100):
         vector = values[:i]
         registersQtt.append(i)
 
-        auxDict = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Binary Search': [], 'Ternary Search': [], 'Interpolation Search': []}
+        auxDict = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Indexed Sequential Search': [], 'Binary Search': [], 'Interpolation Search': [], 'Ternary Search': []}
         
         for n in range(10):
             element = random.choice(vector)
 
             auxDict['Sequential Search'].append(sequentialSearch(element, vector) * 1000000)
             auxDict['Sequential Sentinel Search'].append(sequentialSearchSentinel(element, vector.copy()) * 1000000)
+            auxDict['Indexed Sequential Search'].append(indexedSearch(element, vector) * 1000000)
             auxDict['Binary Search'].append(binarySearch(element, vector) * 1000000)
-            auxDict['Ternary Search'].append(ternarySearch(element, vector) * 1000000)
+            auxDict['Ternary Search'].append(ternarySearch(element, vector) * 1000000)            
             auxDict['Interpolation Search'].append(interpolationSearch(element, vector) * 1000000)
 
         for key, value in auxDict.items():
             timeResults[key].append(averageVector(value))
 
     return timeResults, registersQtt
-
 
 def plotLineChart(registersQuantity, timeDict):
     plt.figure('Search methods')
