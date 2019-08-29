@@ -20,8 +20,8 @@ def generateRandomUniqueNumbers(start, end, quantity):
 
 # BUSCA SEQUENCIAL COM SENTINELA [O(n)] (Está inserindo a sentinela na lista passada por parametro)
 def sequentialSearchSentinel(key, values):
-    init = time.time()
 
+    init = time.time()
     i = 0
     values.append(key)
 
@@ -94,8 +94,8 @@ def interpolationSearch(key, values):
 
     return -1
 
-#BUSCA INDEXADA
-#https://www.geeksforgeeks.org/indexed-sequential-search/
+# BUSCA INDEXADA
+# https://www.geeksforgeeks.org/indexed-sequential-search/
 def indexedSearch(key, values):
     index = {}
     registers = {}
@@ -117,7 +117,6 @@ def indexedSearch(key, values):
     if(key < registers[0]):
         return -1
     else:
-        
         for i in range(1, j+1):
             if(key < registers[i]):
                 start = index[i - 1]
@@ -141,7 +140,7 @@ def ternarySearch(key, values):
     init = time.time()
 
     left = 0
-    right = len(values)
+    right = len(values) - 1
 
     while right >= left: 
 
