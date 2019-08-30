@@ -14,7 +14,6 @@ def averageVector(values):
 # GERAR NÚMEROS ALEATÓRIOS EXCLUSIVOS DENTRO DE UM INTERVALO
 def generateRandomUniqueNumbers(start, end, quantity):
     numbers = random.sample(range(start, end), quantity)
-    numbers.sort()
 
     return numbers
 
@@ -161,7 +160,30 @@ def ternarySearch(key, values):
   
     return -1
 
-def getTimeResults(values):
+def getTimeResultsNonSorted(values):
+    timeResults = {'Sequential Search': [], 'Sequential Search ForEach': [], 'Sequential Sentinel Search': []}
+    registersQtt = []
+
+    for i in range(10, MAX_REGISTRY, 100):
+        vector = values[:i]
+        registersQtt.append(i)
+
+        auxDict = {'Sequential Search': [], 'Sequential Search ForEach': [], 'Sequential Sentinel Search': []}
+        
+        for n in range(10):
+            element = random.choice(vector)
+
+            auxDict['Sequential Search'].append(sequentialSearch(element, vector) * 1000000)
+            auxDict['Sequential Search ForEach'].append(sequentialSearchForEach(element, vector) * 1000000)
+            auxDict['Sequential Sentinel Search'].append(sequentialSearchSentinel(element, vector.copy()) * 1000000)
+
+        for key, value in auxDict.items():
+            timeResults[key].append(averageVector(value))
+
+    return timeResults, registersQtt
+
+
+def getTimeResultsSorted(values):
     timeResults = {'Sequential Search': [], 'Sequential Search ForEach': [], 'Sequential Sentinel Search': [], 'Indexed Sequential Search': [], 'Binary Search': [], 'Interpolation Search': [], 'Ternary Search': []}
     registersQtt = []
 
@@ -189,7 +211,7 @@ def getTimeResults(values):
 
 def plotLineChart(registersQuantity, timeDict):
     plt.figure('Search methods')
-    plt.title("Search methods")
+    plt.title('Search methods')
 
     for key, value in timeDict.items():
         plt.plot(registersQuantity, value, label=key)
@@ -201,7 +223,45 @@ def plotLineChart(registersQuantity, timeDict):
     plt.show()
 
 def main():
-    timeResults, registersQtt = getTimeResults(generateRandomUniqueNumbers(0, 99999, MAX_REGISTRY))
+    while True:
+        print('Escolha entre os tipos de geração de vetores:')
+        print('(1) Vetor com numeros unicos e ordenado')
+        print('(2) Vetor em ordem decrescente')
+        print('(3) Vetor com repetições e desordenado')
+        print('(4) Vetor com repetições e ordenado')
+        print('(5) Vetor desordenado sem repetições')
+        n = int(input())
+        if n == 1:
+            values = generateRandomUniqueNumbers(0, 99999, MAX_REGISTRY)
+            values.sort()
+            timeResults, registersQtt = getTimeResultsSorted(values)
+            break
+        elif n == 2:
+            values = generateRandomUniqueNumbers(0, 99999, MAX_REGISTRY)
+            values.sort(reverse=True)
+            timeResults, registersQtt = getTimeResultsNonSorted(values)
+            break
+        elif n == 3:
+            values = generateRandomUniqueNumbers(0, 99999, MAX_REGISTRY // 2)
+            values = values + values
+            values.sort()
+            timeResults, registersQtt = getTimeResultsNonSorted(values)
+            break
+        elif  n == 4:
+            values = generateRandomUniqueNumbers(0, 99999, MAX_REGISTRY // 2)
+            values = values + values
+            random.shuffle(values)
+            timeResults, registersQtt = getTimeResultsNonSorted(values)
+            break
+        elif n == 5:
+            values = generateRandomUniqueNumbers(0, 99999, MAX_REGISTRY)
+            random.shuffle(values)
+            timeResults, registersQtt = getTimeResultsNonSorted(values)
+            break
+        else:
+            print ('Este número existe?')
+            print ('Digite novamente.')
+    
     plotLineChart(registersQtt, timeResults)
 
 if __name__ == '__main__':
