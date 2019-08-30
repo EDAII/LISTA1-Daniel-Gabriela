@@ -20,7 +20,6 @@ def generateRandomUniqueNumbers(start, end, quantity):
 
 # BUSCA SEQUENCIAL COM SENTINELA [O(n)] (Está inserindo a sentinela na lista passada por parametro)
 def sequentialSearchSentinel(key, values):
-
     init = time.time()
     i = 0
     values.append(key)
@@ -34,21 +33,21 @@ def sequentialSearchSentinel(key, values):
     return time.time() - init
 
 # BUSCA SEQUENCIAL SEM SENTINELA [O(n)]
-def sequentialSearch(key, values):
+def sequentialSearchForEach(key, values):
     init = time.time()
     for i in values:
         if (key == i):
             return time.time() - init
     return -1
 
-# def sequentialSearch(key, values):
-#     init = time.time()
-#     i = 0
-#     while i < len(values):
-#         if (values[i] == key):
-#             return time.time() - init
-#         i += 1
-#     return -1
+def sequentialSearch(key, values):
+    init = time.time()
+    i = 0
+    while i < len(values):
+        if (values[i] == key):
+            return time.time() - init
+        i += 1
+    return -1
 
 # BUSCA BINÁRIA (COM VETOR) [O(log n)]
 def binarySearch(key, values):
@@ -163,19 +162,20 @@ def ternarySearch(key, values):
     return -1
 
 def getTimeResults(values):
-    timeResults = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Indexed Sequential Search': [], 'Binary Search': [], 'Interpolation Search': [], 'Ternary Search': []}
+    timeResults = {'Sequential Search': [], 'Sequential Search ForEach': [], 'Sequential Sentinel Search': [], 'Indexed Sequential Search': [], 'Binary Search': [], 'Interpolation Search': [], 'Ternary Search': []}
     registersQtt = []
 
     for i in range(10, MAX_REGISTRY, 100):
         vector = values[:i]
         registersQtt.append(i)
 
-        auxDict = {'Sequential Search': [], 'Sequential Sentinel Search': [], 'Indexed Sequential Search': [], 'Binary Search': [], 'Interpolation Search': [], 'Ternary Search': []}
+        auxDict = {'Sequential Search': [], 'Sequential Search ForEach': [], 'Sequential Sentinel Search': [], 'Indexed Sequential Search': [], 'Binary Search': [], 'Interpolation Search': [], 'Ternary Search': []}
         
         for n in range(10):
             element = random.choice(vector)
 
             auxDict['Sequential Search'].append(sequentialSearch(element, vector) * 1000000)
+            auxDict['Sequential Search ForEach'].append(sequentialSearchForEach(element, vector) * 1000000)
             auxDict['Sequential Sentinel Search'].append(sequentialSearchSentinel(element, vector.copy()) * 1000000)
             auxDict['Indexed Sequential Search'].append(indexedSearch(element, vector) * 1000000)
             auxDict['Binary Search'].append(binarySearch(element, vector) * 1000000)
